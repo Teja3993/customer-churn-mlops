@@ -1,0 +1,14 @@
+# Environments
+venv/
+__pycache__/
+
+# Data (Never push data to GitHub)
+data/raw/
+data/processed/
+
+# API Keys
+kaggle.json
+
+# Saved Models
+models/*.pkl
+models/*.joblib

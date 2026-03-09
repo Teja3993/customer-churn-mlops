@@ -1,0 +1,21 @@
+name: Python Code Integrity Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install scikit-learn pandas joblib xgboost lightgbm catboost textblob
+    - name: Smoke Test - Load Artifacts
+      run: |
+        # This simple test ensures the model artifacts are valid and loadable
+        python -c "import joblib; model = joblib.load('models/churn_stacking_model.joblib'); print('Model Loaded Successfully')"

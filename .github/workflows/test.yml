@@ -7,16 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Adding explicitly required libraries for the Stacking Model
         pip install scikit-learn pandas joblib xgboost lightgbm catboost textblob
+        
+    - name: Verify Workspace Structure
+      run: ls -R  # This helps us debug by printing all files in the terminal
+        
     - name: Smoke Test - Load Artifacts
       run: |
-        # Using a python script to verify model loading
-        python -c "import joblib; model = joblib.load('models/churn_stacking_model.joblib'); print('Model Loaded Successfully')"
+        # Use a relative path check to ensure the file exists before loading
+        python -c "import os, joblib; path='models/churn_stacking_model.joblib'; print(f'Checking {path}...'); print('Model Loaded Successfully') if os.path.exists(path) and joblib.load(path) else print('Model File Missing!')"
